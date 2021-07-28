@@ -57,7 +57,6 @@ const helpers = {
           }
         });
       });
-
     return annotatedImages;
   },
   getTrumbullDataSetArray: () => {
@@ -70,7 +69,7 @@ const helpers = {
         trumbullAddresses.push(address);
       })
       .on("end", function () {
-        console.log(trumbullAddresses);
+        //
       });
     return trumbullAddresses;
   },
