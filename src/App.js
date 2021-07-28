@@ -25,14 +25,18 @@ function App() {
 
   const getAddress = (roof) => {
     const filename = roof.filename;
+    const sliceIndex = filename.indexOf("; ");
+    const address = filename.slice(0, sliceIndex);
 
-    return filename.replace(";", ".").replace(".png", "");
+    return address;
   };
 
   const getTown = (roof) => {
     const filename = roof.filename;
+    const sliceIndex = filename.indexOf("; ") + 2;
+    const townName = filename.slice(sliceIndex).replace(".png", "");
 
-    return filename.replace(";", ".").replace(".png", "");
+    return townName;
   };
 
   const getNumMissingShingles = (roof) => {
@@ -83,12 +87,17 @@ function App() {
     return averageScore.toFixed(2);
   };
 
+  const checkAgainstControl = (roof, control) => {
+    // TODO: Implement this
+  };
+
   return (
     <Card body style={{ width: "50rem", margin: "0 auto" }}>
       <Table striped hover bordered>
         <thead>
           <tr>
             <th>Address</th>
+            <th>Town</th>
             <th># Missing Shingles</th>
             <th>Average Score</th>
             <th># Patches</th>
@@ -100,6 +109,7 @@ function App() {
             return (
               <tr>
                 <td>{getAddress(roof)}</td>
+                <td>{getTown(roof)}</td>
                 <td>{getNumMissingShingles(roof)}</td>
                 <td>{calculateAverageScore(roof, "missing-shingles")}</td>
                 <td>{getNumPatches(roof)}</td>
