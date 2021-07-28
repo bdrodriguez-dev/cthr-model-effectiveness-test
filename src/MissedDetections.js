@@ -1,13 +1,29 @@
+import Table from "react-bootstrap/Table";
+
 const MissedDetections = (props) => {
-  const getMissedDetections = (annotatedRoofs, controlArray) => {
-    const missedDetections = props.controlArray.filter((controlAddress) => {
-      return !annotatedRoofs.includes(controlAddress);
-    });
+  const missedDetections = props.getMissedDetections(
+    props.annotatedRoofs,
+    props.controlArray
+  );
 
-    return missedDetections;
-  };
-
-  return <p>Missed Detections</p>;
+  return (
+    <Table>
+      <thead>
+        <tr>
+          <th>Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        {missedDetections.map((roof) => {
+          return (
+            <tr key={roof}>
+              <td>{roof}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </Table>
+  );
 };
 
 export default MissedDetections;
