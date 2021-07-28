@@ -11,12 +11,12 @@ const {
   getTrumbullDataSetArray,
 } = require("./helpers/helpers");
 const annotatedImages = getAnnotatedImagesArray();
-const trumbullDataSet = getTrumbullDataSetArray();
+const controlArray = getTrumbullDataSetArray();
 
 app.get("/", (req, res) => {
   res.send({
     annotatedImages: annotatedImages,
-    trumbullDataSet: trumbullDataSet,
+    controlArray: controlArray,
   });
 });
 

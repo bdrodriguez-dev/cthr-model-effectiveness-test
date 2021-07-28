@@ -4,17 +4,19 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Table from "react-bootstrap/Table";
 import Card from "react-bootstrap/Card";
+import Tabs from "react-bootstrap/Tabs";
 
 function App() {
   const [annotatedRoofs, setAnnotatedRoofs] = useState([]);
-  const [trumbullData, setTrumbullData] = useState([]);
+  // const [controlArray, setControlArray] = useState([]);
+  const [controlArray, setControlArray] = useState([]);
 
   useEffect(() => {
     async function fetchApi() {
       try {
         const response = await axios.get("http://localhost:8000/");
         setAnnotatedRoofs(response.data.annotatedImages);
-        setTrumbullData(response.data.trumbullDataSet);
+        setControlArray(response.data.controlArraySet);
       } catch (err) {
         console.log(err);
       }
@@ -65,7 +67,7 @@ function App() {
     return numMissingShingles;
   };
 
-  const calculateAverageScore = (roof, damageType) => {
+  const getAverageScore = (roof, damageType) => {
     const damageScoreArray = roof.annotations
       .filter((annotation) => {
         return annotation.type === damageType;
@@ -87,8 +89,35 @@ function App() {
     return averageScore.toFixed(2);
   };
 
-  const checkAgainstControl = (roof, control) => {
-    // TODO: Implement this
+  const checkAgainstControl = (roof, controlArray) => {
+    const address = roof.filename;
+    const isRoofInControl = controlArray.includes(address);
+
+    return isRoofInControl ? "true" : "false-positive";
+  };
+
+  const getMissedDetections = (annotatedRoofs, controlArray) => {
+    const missedDetections = controlArray.filter((controlAddress) => {
+      return !annotatedRoofs.includes(controlAddress);
+    });
+
+    return missedDetections;
+  };
+
+  // TODO: Organize into separate arrays so you can display separately? or sort array by option?
+  const createOutputArray = (roofAnnotations) => {
+    let outputArray;
+    roofAnnotations.map((roof) => {
+      const roofObj = {
+        address: getAddress(roof),
+        town: getTown(roof),
+        numMissingShingles: getNumMissingShingles(roof),
+        avgScoreMissingShingles: getAverageScore(roof, "missing-shingles"),
+        numPatches: getNumPatches(roof),
+        avgScoreMissingShingles: getAverageScore(roof, "patches"),
+        status: checkAgainstControl(roof, controlArray),
+      };
+    });
   };
 
   return (
@@ -111,9 +140,9 @@ function App() {
                 <td>{getAddress(roof)}</td>
                 <td>{getTown(roof)}</td>
                 <td>{getNumMissingShingles(roof)}</td>
-                <td>{calculateAverageScore(roof, "missing-shingles")}</td>
+                <td>{getAverageScore(roof, "missing-shingles")}</td>
                 <td>{getNumPatches(roof)}</td>
-                <td>{calculateAverageScore(roof, "patches")}</td>
+                <td>{getAverageScore(roof, "patches")}</td>
               </tr>
             );
           })}
