@@ -41,10 +41,6 @@ function App() {
     fetchApi();
   }, []);
 
-  // useEffect(() => {
-  //   createOutputArray(annotatedRoofs);
-  // }, [annotatedRoofs, controlArray]);
-
   const getAddress = (roof) => {
     const filename = roof.filename;
     const sliceIndex = filename.indexOf("; ");

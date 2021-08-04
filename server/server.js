@@ -9,14 +9,17 @@ app.use(cors());
 const {
   getAnnotatedImagesArray,
   getTrumbullDataSetArray,
+  getNaugatuckDataSetArray,
 } = require("./helpers/helpers");
 const annotatedImages = getAnnotatedImagesArray();
-const controlArray = getTrumbullDataSetArray();
+const controlTrumbullArray = getTrumbullDataSetArray();
+const controlNaugyArray = getNaugatuckDataSetArray();
 
 app.get("/", (req, res) => {
   res.send({
     annotatedImages: annotatedImages,
-    controlArray: controlArray,
+    controlArray: controlTrumbullArray,
+    controlNaugyArray: controlNaugyArray,
   });
 });
 

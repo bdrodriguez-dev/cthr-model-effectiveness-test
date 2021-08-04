@@ -2,7 +2,14 @@ const fs = require("fs");
 const csv = require("csv-parser");
 const path = require("path");
 const annotationsDirPath = path.join(__dirname, "/../assets/annotations.csv");
-const trumbullDirPath = path.join(__dirname, "/../assets/trumbull-ds.csv");
+const trumbullDirPath = path.join(
+  __dirname,
+  "/../assets/true-trumbull-control.csv"
+);
+const naugatuckDirPath = path.join(
+  __dirname,
+  "/../assets/naugatuck-new-haven.csv"
+);
 
 const helpers = {
   getAnnotatedImagesArray: () => {
@@ -72,6 +79,27 @@ const helpers = {
         //
       });
     return trumbullAddresses;
+  },
+  getNaugatuckDataSetArray: () => {
+    const naugyAddresses = [];
+    fs.createReadStream(naugatuckDirPath)
+      .pipe(csv())
+      .on("data", function (row) {
+        const rowKey = Object.keys(row)[0];
+        if (row.includes("png")) {
+          const address = row[rowKey].replace(".png", "");
+        }
+
+        if (row.includes("jpg")) {
+          const address = row[rowKey].replace(".jpg", "");
+        }
+
+        naugyAddresses.push(address);
+      })
+      .on("end", function () {
+        //
+      });
+    return naugyAddresses;
   },
 };
 

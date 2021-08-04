@@ -10,6 +10,7 @@ const MainData = (props) => {
     <Table striped hover bordered>
       <thead>
         <tr>
+          <th>Verified</th>
           <th>Address</th>
           <th>Town</th>
           <th># Missing Shingles</th>
@@ -23,6 +24,9 @@ const MainData = (props) => {
         {props.outputArray.map((roof) => {
           return (
             <tr key={roof.address}>
+              <td>
+                <input type="checkbox" />
+              </td>
               <td>{roof.address}</td>
               <td>{roof.town}</td>
               <td>{roof.numMissingShingles}</td>
