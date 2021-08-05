@@ -13,33 +13,34 @@ import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
+import UserInput from "./UserInput";
 
 function App() {
-  const [annotatedRoofs, setAnnotatedRoofs] = useState([]);
-  const [controlArray, setControlArray] = useState(null);
-  const [outputArray, setOutputArray] = useState([]);
+  // const [annotatedRoofs, setAnnotatedRoofs] = useState([]);
+  // const [controlArray, setControlArray] = useState(null);
+  // const [outputArray, setOutputArray] = useState([]);
 
-  useEffect(() => {
-    async function fetchApi() {
-      try {
-        const response = await axios.get("http://localhost:8000/");
-        const annotatedRoofsData = response.data.annotatedImages;
-        const controlArrayData = response.data.controlArray;
+  // useEffect(() => {
+  //   async function fetchApi() {
+  //     try {
+  //       const response = await axios.get("http://localhost:8000/");
+  //       const annotatedRoofsData = response.data.annotatedImages;
+  //       const controlArrayData = response.data.controlArray;
 
-        setAnnotatedRoofs(annotatedRoofsData);
-        setControlArray(controlArrayData);
+  //       setAnnotatedRoofs(annotatedRoofsData);
+  //       setControlArray(controlArrayData);
 
-        const outputArrayRaw = createOutputArray(
-          annotatedRoofsData,
-          controlArrayData
-        );
-        setOutputArray(outputArrayRaw);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchApi();
-  }, []);
+  //       const outputArrayRaw = createOutputArray(
+  //         annotatedRoofsData,
+  //         controlArrayData
+  //       );
+  //       setOutputArray(outputArrayRaw);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   }
+  //   fetchApi();
+  // }, []);
 
   const getAddress = (roof) => {
     const filename = roof.filename;
@@ -163,39 +164,40 @@ function App() {
   // createOutputArray(annotatedRoofs);
 
   return (
-    <Container>
-      <Tabs defaultActiveKey="main-data" className="mb-3">
-        <Tab eventKey="main-data" title="Main Data">
-          {controlArray && (
-            <MainData
-              annotatedRoofs={annotatedRoofs}
-              controlArray={controlArray}
-              outputArray={outputArray}
-              statusAlertHandler={getStatusAlert}
-            ></MainData>
-          )}
-        </Tab>
-        <Tab eventKey="missed-detections" title="Missed Detections">
-          {controlArray && (
-            <MissedDetections
-              annotatedRoofs={annotatedRoofs}
-              controlArray={controlArray}
-              getMissedDetections={getMissedDetections}
-            ></MissedDetections>
-          )}
-        </Tab>
-        <Tab eventKey="summary" title="Summary">
-          {controlArray && (
-            <Summary
-              annotatedRoofs={annotatedRoofs}
-              controlArray={controlArray}
-              outputArray={outputArray}
-              getMissedDetections={getMissedDetections}
-            ></Summary>
-          )}
-        </Tab>
-      </Tabs>
-    </Container>
+    <UserInput />
+    // <Container>
+    //   <Tabs defaultActiveKey="main-data" className="mb-3">
+    //     <Tab eventKey="main-data" title="Main Data">
+    //       {controlArray && (
+    //         <MainData
+    //           annotatedRoofs={annotatedRoofs}
+    //           controlArray={controlArray}
+    //           outputArray={outputArray}
+    //           statusAlertHandler={getStatusAlert}
+    //         ></MainData>
+    //       )}
+    //     </Tab>
+    //     <Tab eventKey="missed-detections" title="Missed Detections">
+    //       {controlArray && (
+    //         <MissedDetections
+    //           annotatedRoofs={annotatedRoofs}
+    //           controlArray={controlArray}
+    //           getMissedDetections={getMissedDetections}
+    //         ></MissedDetections>
+    //       )}
+    //     </Tab>
+    //     <Tab eventKey="summary" title="Summary">
+    //       {controlArray && (
+    //         <Summary
+    //           annotatedRoofs={annotatedRoofs}
+    //           controlArray={controlArray}
+    //           outputArray={outputArray}
+    //           getMissedDetections={getMissedDetections}
+    //         ></Summary>
+    //       )}
+    //     </Tab>
+    //   </Tabs>
+    // </Container>
   );
 }
 
