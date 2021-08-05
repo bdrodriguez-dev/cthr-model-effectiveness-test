@@ -5,19 +5,22 @@ import Button from "react-bootstrap/Button";
 import axios from "axios";
 
 const UserInput = (props) => {
-  const [annotationsFile, setAnnotationsFile] = useState({});
+  // Annotation and Validation Files
+  const [annotationFile, setAnnotationFile] = useState({});
   const [validationsFile, setValidationsFile] = useState({});
+  // FormData with above
   const [fileFormData, setFileFormData] = useState([]);
+  // Form
   const [uploadForm, setUploadForm] = useState({});
+  // Flags
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
+  // Arrays that will be used to render MainData component
+  const [annotatedImagesArray, setAnnotatedImagesArray] = useState([]);
+  const [validationDataSetArray, setValidationDataSetArray] = useState([]);
 
   useEffect(() => {
     if (isSubmit === true) {
-      // const instance = axios.create({
-      //   baseURL: "http://localhost:8000/",
-      // });
-
       // send post request
       axios({
         method: "post",
@@ -25,36 +28,26 @@ const UserInput = (props) => {
         data: fileFormData,
       })
         .then((res) => {
+          // if (typeof res.data === 'string')
+          // setAnnotatedImagesArray(res.annotatedImagesArray);
+          // setValidationDataSetArray(res.validationDataSetArray);
           console.log(res.data);
         })
         .catch((err) => {
           console.log(err);
         });
-      // instance
-      //   .post("/", fileFormData, {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   })
-      //   .then((res) => {
-      //     console.log(res);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
 
       setIsLoading(true);
     }
-    //post request
   }, [isSubmit]);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
 
-    console.log(annotationsFile, validationsFile);
+    console.log(annotationFile, validationsFile);
     const fd = new FormData(uploadForm);
-    fd.append("annotations-data", annotationsFile, "annotationsFile.csv");
-    // fd.append("validations-data", validationsFile, "validationsFile.csv");
+    fd.append("annotations-data", annotationFile, "annotationsFile.csv");
+    fd.append("validations-data", validationsFile, "validationsFile.csv");
 
     setFileFormData(fd);
     setIsSubmit(true);
@@ -64,7 +57,7 @@ const UserInput = (props) => {
     //check which file
     const file = e.target.files[0];
     if (e.target.id === "annotations-file") {
-      setAnnotationsFile(file);
+      setAnnotationFile(file);
     } else {
       setValidationsFile(file);
     }

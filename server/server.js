@@ -1,18 +1,44 @@
+// Libraries
 const express = require("express");
+const path = require("path");
+const multer = require("multer");
+// Set Up Server
 const app = express();
-
-var multer = require("multer");
-var upload = multer({ dest: "uploads/" });
-
 const PORT = 8000;
-
+// Allow Cross Origin Resource Sharing
 const cors = require("cors");
 app.use(cors());
+// Recognize the incoming Request Object as a JSON Object
 app.use(express.json());
+// Set The Storage Engine
+const storage = multer.diskStorage({
+  destination: "./uploads/",
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + path.extname(file.originalname));
+  },
+});
+// Init Upload
+const uploadAllFiles = multer({
+  storage: storage,
+}).any();
+
+app.post("/", (req, res) => {
+  uploadAllFiles(req, res, (err) => {
+    if (err) {
+      res.json({ msg: "Error loading files. Try again" });
+    } else {
+      // Get Files
+      const annotationCsv = req.files[0];
+      const validationCsv = req.files[0];
+    }
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 // const {
-//   getAnnotatedImagesArray,
-//   getTrumbullDataSetArray,
 //   getNaugatuckDataSetArray,
 // } = require("./helpers/helpers");
 // const annotatedImages = getAnnotatedImagesArray();
@@ -26,19 +52,3 @@ app.use(express.json());
 //     controlNaugyArray: controlNaugyArray,
 //   });
 // });
-
-app.post("/", upload.single("annotations-data"), (req, res) => {
-  //TODO: this
-  console.log("line32, server.js");
-  console.log("line34, server.js");
-  console.log(req.file);
-  // try {
-  //   // const userInputFormData = req.body;
-  // } catch (error) {
-  //   console.log(error);
-  // }
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});

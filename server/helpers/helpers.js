@@ -1,14 +1,13 @@
 const fs = require("fs");
 const csv = require("csv-parser");
 const path = require("path");
-const annotationsDirPath = path.join(__dirname, "/../assets/annotations.csv");
-const trumbullDirPath = path.join(
+const annotationsDirPath = path.join(
   __dirname,
-  "/../assets/true-trumbull-control.csv"
+  "/../uploads/annotations-data.csv"
 );
-const naugatuckDirPath = path.join(
+const validationsDirPath = path.join(
   __dirname,
-  "/../assets/naugatuck-new-haven.csv"
+  "/../uploads/validations-data.csv"
 );
 
 const helpers = {
@@ -66,40 +65,19 @@ const helpers = {
       });
     return annotatedImages;
   },
-  getTrumbullDataSetArray: () => {
-    const trumbullAddresses = [];
-    fs.createReadStream(trumbullDirPath)
+  getValidationDataSetArray: () => {
+    const validationAddresses = [];
+    fs.createReadStream(validationsDirPath)
       .pipe(csv())
       .on("data", function (row) {
         const rowKey = Object.keys(row)[0];
         const address = row[rowKey].replace(";", ".").replace(".png", "");
-        trumbullAddresses.push(address);
+        validationAddresses.push(address);
       })
       .on("end", function () {
         //
       });
-    return trumbullAddresses;
-  },
-  getNaugatuckDataSetArray: () => {
-    const naugyAddresses = [];
-    fs.createReadStream(naugatuckDirPath)
-      .pipe(csv())
-      .on("data", function (row) {
-        const rowKey = Object.keys(row)[0];
-        if (row.includes("png")) {
-          const address = row[rowKey].replace(".png", "");
-        }
-
-        if (row.includes("jpg")) {
-          const address = row[rowKey].replace(".jpg", "");
-        }
-
-        naugyAddresses.push(address);
-      })
-      .on("end", function () {
-        //
-      });
-    return naugyAddresses;
+    return validationAddresses;
   },
 };
 
