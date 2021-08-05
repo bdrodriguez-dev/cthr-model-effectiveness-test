@@ -1,28 +1,22 @@
-const express = require("express");
-const app = express();
-
-const PORT = 8000;
-
-const cors = require("cors");
+var express = require("express");
+var app = express();
+var PORT = 8000;
+var cors = require("cors");
 app.use(cors());
-
-const {
-  getAnnotatedImagesArray,
-  getTrumbullDataSetArray,
-  getNaugatuckDataSetArray,
-} = require("./helpers/helpers");
-const annotatedImages = getAnnotatedImagesArray();
-const controlTrumbullArray = getTrumbullDataSetArray();
-const controlNaugyArray = getNaugatuckDataSetArray();
-
-app.get("/", (req, res) => {
-  res.send({
-    annotatedImages: annotatedImages,
-    controlArray: controlTrumbullArray,
-    controlNaugyArray: controlNaugyArray,
-  });
+any[];
+{ }
+;
+var _a = require("./helpers/helpers"), getAnnotatedImagesArray = _a.getAnnotatedImagesArray, getTrumbullDataSetArray = _a.getTrumbullDataSetArray, getNaugatuckDataSetArray = _a.getNaugatuckDataSetArray;
+var annotatedImages = getAnnotatedImagesArray();
+var controlTrumbullArray = getTrumbullDataSetArray();
+var controlNaugyArray = getNaugatuckDataSetArray();
+app.get("/", function (req, res) {
+    res.send({
+        annotatedImages: annotatedImages,
+        controlArray: controlTrumbullArray,
+        controlNaugyArray: controlNaugyArray
+    });
 });
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(PORT, function () {
+    console.log("Server running on port " + PORT);
 });
