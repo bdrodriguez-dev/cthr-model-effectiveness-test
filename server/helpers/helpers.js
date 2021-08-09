@@ -11,24 +11,33 @@ const validationsDirPath = path.join(
 );
 
 const helpers = {
-  getAnnotatedImagesArray: () => {
-    const annotations = [];
+  getAnnotatedImagesArray: async () => {
+    let annotations = [];
     // *** Master list ***
-    const annotatedImages = [];
+    let annotatedImages = [];
 
-    fs.createReadStream(annotationsDirPath)
+    const array = fs
+      .createReadStream(annotationsDirPath)
       .pipe(csv())
-      .on("data", function (row) {
-        // filename,category,score,left,top,bottom,right
-        const roofObj = {
-          filename: row.filename,
-          category: row.category,
-          score: row.score,
-          annotation: [row.left, row.top, row.bottom, row.right],
-        };
-        annotations.push(roofObj);
+      .on("data", function (err, row) {
+        if (err) {
+          console.log(`Error from helpers.js line 24: ${err}`);
+        } else {
+          // filename,category,score,left,top,bottom,right
+
+          const roofObj = {
+            filename: row.filename,
+            category: row.category,
+            score: row.score,
+            annotation: [row.left, row.top, row.bottom, row.right],
+          };
+
+          annotations.push(roofObj);
+        }
       })
       .on("end", function () {
+        console.log("END event fired from line 39!!!");
+        // console.log(annotations);
         annotations.forEach((annotation) => {
           // Does the annotation's file already exist in annotatedImages
           const annotationImageIndex = annotatedImages.findIndex(
@@ -46,6 +55,7 @@ const helpers = {
               annotation.annotation[3],
             ],
           };
+          // console.log(annotationObj);
 
           // If the annotationImage already exists add to its annotations array
           if (annotationImageIndex > -1) {
@@ -59,11 +69,18 @@ const helpers = {
               annotations: [],
             };
             annotatedImage.annotations.push(annotationObj);
+            // console.log(annotatedImage);
             annotatedImages.push(annotatedImage);
+            // console.log(annotatedImage);
+            // console.log(annotatedImage);
+            // console.log(annotatedImages);
           }
         });
+        return annotatedImages;
       });
-    return annotatedImages;
+
+    // console.log(`line 77: ${JSON.stringify(array)}`);
+    // return annotatedImages;
   },
   getValidationDataSetArray: () => {
     const validationAddresses = [];
@@ -75,8 +92,9 @@ const helpers = {
         validationAddresses.push(address);
       })
       .on("end", function () {
-        //
+        // console.log(`Validations read stream complete....`);
       });
+
     return validationAddresses;
   },
 };

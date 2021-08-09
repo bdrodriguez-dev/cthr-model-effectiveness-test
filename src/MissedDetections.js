@@ -1,11 +1,6 @@
 import Table from "react-bootstrap/Table";
 
 const MissedDetections = (props) => {
-  const missedDetections = props.getMissedDetections(
-    props.annotatedRoofs,
-    props.controlArray
-  );
-
   return (
     <Table>
       <thead>
@@ -14,7 +9,7 @@ const MissedDetections = (props) => {
         </tr>
       </thead>
       <tbody>
-        {missedDetections.map((roof) => {
+        {props.missedDetections.map((roof) => {
           return (
             <tr key={roof}>
               <td>{roof}</td>
