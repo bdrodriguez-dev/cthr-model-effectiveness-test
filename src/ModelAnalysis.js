@@ -165,7 +165,18 @@ const ModelAnalysis = (props) => {
     <>
       {isOutputArrayValidated && (
         <Container>
-          <Tabs defaultActiveKey="main-data" className="mb-3">
+          <Tabs defaultActiveKey="summary" className="mb-3">
+            <Tab eventKey="summary" title="Summary">
+              {props.validationDataSetArray && (
+                <Summary
+                  annotatedRoofs={props.annotatedImagesArray}
+                  controlArray={props.validationDataSetArray}
+                  outputArray={props.outputArray}
+                  missedDetections={props.missedDetections}
+                  modelName={props.modelName}
+                ></Summary>
+              )}
+            </Tab>
             <Tab eventKey="main-data" title="Main Data">
               {props.validationDataSetArray && (
                 <MainData
@@ -184,16 +195,6 @@ const ModelAnalysis = (props) => {
                   missedDetections={props.missedDetections}
                   setMissedDetections={props.setMissedDetections}
                 ></MissedDetections>
-              )}
-            </Tab>
-            <Tab eventKey="summary" title="Summary">
-              {props.validationDataSetArray && (
-                <Summary
-                  annotatedRoofs={props.annotatedImagesArray}
-                  controlArray={props.validationDataSetArray}
-                  outputArray={props.outputArray}
-                  missedDetections={props.missedDetections}
-                ></Summary>
               )}
             </Tab>
           </Tabs>

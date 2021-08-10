@@ -16,6 +16,7 @@ const Controller = (props) => {
   const [validationDataSetArray, setValidationDataSetArray] = useState([]);
   const [outputArray, setOutputArray] = useState([]);
   const [missedDetections, setMissedDetections] = useState([]);
+  const [modelName, setModelName] = useState("");
 
   const childrenWithProps = React.Children.map(props.children, (child) => {
     // Checking isValidElement is the safe way and avoids a typescript
@@ -38,6 +39,8 @@ const Controller = (props) => {
         setValidationsFile: setValidationsFile,
         validationDataSetArray: validationDataSetArray,
         validationsFile: validationsFile,
+        modelName: modelName,
+        setModelName: setModelName,
       });
     }
   });

@@ -22,6 +22,8 @@ const UserInput = ({
   validationDataSetArray,
   validationsFile,
   missedDetections,
+  modelName,
+  setModelName,
 }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -148,8 +150,9 @@ const UserInput = ({
         // console.log(
         //   `From getAnnotationsFromServer (line 98) ${JSON.stringify(res.data)}`
         // );
-        const returnData = res.data;
-        setAnnotatedImagesArray([...returnData]);
+        const annotatedImagesArrayFromServer = res.data;
+
+        setAnnotatedImagesArray([...annotatedImagesArrayFromServer]);
       })
       .catch((err) => {
         console.log(err);
@@ -217,6 +220,17 @@ const UserInput = ({
     _setMissedDetections(missedDetectionsInstanceArray);
   };
 
+  const onChangeModelNameHandler = (e) => {
+    const name = e.target.value;
+    setModelName(name);
+  };
+
+  const onKeyPressModelNameHandler = (e) => {
+    if (e.keyCode === 13) {
+      e.target.blur();
+    }
+  };
+
   return (
     <>
       {errorMessage !== "" ? (
@@ -238,6 +252,18 @@ const UserInput = ({
             encType="multipart/form-data"
             name="files-form"
           >
+            <Form.Group controlId="model-name" className="mb-3">
+              <Form.Label>
+                Please enter a name for your model (optional).
+              </Form.Label>
+              <Form.Control
+                type="text"
+                size="sm"
+                onChange={onChangeModelNameHandler}
+                defaultValue={modelName}
+                onKeyPress={onKeyPressModelNameHandler}
+              />
+            </Form.Group>
             <Form.Group controlId="annotations-file" className="mb-3">
               <Form.Label>Please select your annotations csv.</Form.Label>
               <Form.Control

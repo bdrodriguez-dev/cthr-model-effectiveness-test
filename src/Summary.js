@@ -43,7 +43,7 @@ const Summary = (props) => {
       return !roof.status;
     }).length;
     //get num missed detections from state
-    const numMissedDetections = props.numMissedDetections;
+    const numMissedDetections = props.missedDetections.length;
     //get total number of damaged roofs in dataset
     const numDamagedRoofsInDataSet = controlArray.length;
     //create an object w info
@@ -75,6 +75,25 @@ const Summary = (props) => {
   return (
     <>
       <Card>
+        <Card.Title>
+          Analysis for <Alert variant="info">{props.modelName}</Alert>
+        </Card.Title>
+        <Card>
+          <Card.Body>
+            <Card.Title>Model Score</Card.Title>
+            <p>{`${percentValid}% of Detections are Valid Detections`}</p>
+            <p>{`${percentFalse}% of Detections are False Positives`}</p>
+            <p>{`Number of Missed Detections: ${totals.numMissedDetections}`}</p>
+            <Alert variant={percentDetected > 70 ? "success" : "warning"}>
+              {`${percentDetected}% of Damaged Roofs Accurately Detected`}
+            </Alert>
+            <Alert variant={percentDetected > 70 ? "success" : "warning"}>
+              {percentDetected > 70
+                ? "This model is pretty good."
+                : "This model kinda sucks."}
+            </Alert>
+          </Card.Body>
+        </Card>
         <Card.Body>
           <Card.Title>Totals</Card.Title>
           <p>{`Number of Annotated Roofs: ${totals.numAnnotatedRoofs}`}</p>
@@ -85,21 +104,6 @@ const Summary = (props) => {
             {`Number of Damaged Roofs in Control: ${totals.numDamagedRoofsInDataSet}
         `}
           </p>
-        </Card.Body>
-      </Card>
-      <Card>
-        <Card.Body>
-          <Card.Title>Model Score</Card.Title>
-          <p>{`${percentValid}% of Detections are Valid Detections`}</p>
-          <p>{`${percentFalse}% of Detections are False Positives`}</p>
-          <Alert variant={percentDetected > 70 ? "success" : "warning"}>
-            {`${percentDetected}% of Damaged Roofs Accurately Detected`}
-          </Alert>
-          <Alert variant={percentDetected > 70 ? "success" : "warning"}>
-            {percentDetected > 70
-              ? "This model is pretty good."
-              : "This model kinda sucks."}
-          </Alert>
         </Card.Body>
       </Card>
     </>

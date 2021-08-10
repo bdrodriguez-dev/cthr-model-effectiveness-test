@@ -26,6 +26,8 @@ const Layout = (props) => {
         uploadForm: props.uploadForm,
         validationDataSetArray: props.validationDataSetArray,
         validationsFile: props.validationsFile,
+        modelName: props.modelName,
+        setModelName: props.setModelName,
       });
     }
   });

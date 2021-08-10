@@ -108,7 +108,7 @@ app.post("/annotations", (req, res) => {
               // console.log(annotatedImages);
             }
           });
-          console.log(annotatedImagesArray);
+          // console.log(annotatedImagesArray);
           // ** Response **
           res.send(annotatedImagesArray);
         });
@@ -123,7 +123,7 @@ app.post("/validations", (req, res) => {
   uploadAllFiles(req, res, () => {
     try {
       // file log
-      console.log(req.files[0]);
+      // console.log(req.files[0]);
 
       // *** Master lists ***
       let validationAddresses = [];
